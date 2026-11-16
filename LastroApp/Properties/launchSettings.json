@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "LastroApp": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
