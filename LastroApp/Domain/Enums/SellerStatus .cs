@@ -5,7 +5,8 @@ namespace LastroApp.Domain.Enums{
         Active, 
         Inactive,
         Suspense, 
-        Pending
+        Banned
+
     }
 
 }

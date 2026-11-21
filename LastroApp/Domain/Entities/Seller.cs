@@ -11,7 +11,7 @@ namespace LastroApp.Domain.Entities{
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
 
-        public Seller (string name, string cnpj, SellerStatus sellerStatus, DateTime createAt)
+        public Seller (int Id, string name, string cnpj, SellerStatus sellerStatus, DateTime createAt)
         {
             Name = name; 
             CNPJ = cnpj;
@@ -37,6 +37,17 @@ namespace LastroApp.Domain.Entities{
                 {
                     throw new ArgumentException("CNPJ must have 14 digits.");
                 }
+            }
+        }
+        public void ValidSeller()
+        {   
+            if(SellerStatus != SellerStatus.Active)
+            {
+                throw new InvalidOperationException("The Seller must be active!");
+            }
+            if(SellerStatus == SellerStatus.Banned)
+            {
+                throw new InvalidOperationException("The Seller was banned");
             }
         }
     }
