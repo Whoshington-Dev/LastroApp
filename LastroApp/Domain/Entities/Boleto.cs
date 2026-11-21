@@ -8,8 +8,7 @@ namespace LastroApp.Domain.Entities
         public string CodeBoleto { get; private set; }
         public Users Users { get; private set; }
         public BoletoStatus BoletoStatus { get; private set; }
-        public StatusPayment StatusPayment { get; private set; }
-        public SellerStatus SellerStatus { get; private set; }
+    
 
         public Boleto (string txt, string codeBoleto, Users users, BoletoStatus boletoStatus, StatusPayment statusPayment, SellerStatus sellerStatus)
         {
@@ -17,8 +16,6 @@ namespace LastroApp.Domain.Entities
             CodeBoleto = codeBoleto;
             Users = users;
             BoletoStatus = boletoStatus;
-            StatusPayment = statusPayment;
-            SellerStatus = sellerStatus;
         }
 
 
