@@ -4,7 +4,7 @@ namespace LastroApp.Domain.Entities{
 
     public class Seller
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; private set; }
         public string CNPJ { get; private set; }
         public SellerStatus SellerStatus { get; private set; }
