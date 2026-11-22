@@ -1,6 +1,10 @@
-namespace LastroApp.Domain.Enums{
-
-public enum BoletoStatus
+namespace LastroApp.Domain.Enums
 {
-}
+    public enum BoletoStatus
+    {
+        Issuance,
+        Payment, 
+        Maturity, 
+        Termination
+    }
 }

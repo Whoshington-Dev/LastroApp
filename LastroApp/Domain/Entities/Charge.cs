@@ -28,7 +28,7 @@ namespace LastroApp.Domain.Entities
 
         public static Charge Create(Seller seller, Payer payer, long amountInCents, string description)
         {
-            seller.ValidSeller();                    // mesma regra do RN-02
+            seller.ValidSeller();
 
             if (amountInCents < 100)
                 throw new DomainException("The amount does not meet the minimum (R$ 1,00).");

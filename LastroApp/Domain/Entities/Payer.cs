@@ -4,13 +4,14 @@ namespace LastroApp.Domain.Entities
 {
     public class Payer
     {
-        public int Id { get; set; }
+        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public string CPF { get; private set; }
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
         public Payer(string name, string cpf, string cnpj, SellerStatus sellerStatus , DateTime createdAt)
         {
+            Id = Guid.NewGuid();
             Name = name;
             CPF = cpf;
             CreatedAt = createdAt;
