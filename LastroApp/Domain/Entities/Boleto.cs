@@ -1,24 +1,33 @@
+using System.ComponentModel;
+using System.Security.Permissions;
 using LastroApp.Domain.Enums;
 
 namespace LastroApp.Domain.Entities
 {
     public class Boleto
     {
-        public string Txt { get; set; }
+        public Guid Id { get; private set; }
+        public string Emitir { get; private set; }
         public string CodeBoleto { get; private set; }
-        public Users Users { get; private set; }
-        public BoletoStatus BoletoStatus { get; private set; }
+        public BoletoStatus Status { get; private set; }
+        public Guid ChargeId { get; private set; }
+        public Guid PayerId { get; private set; }
+        public Guid SellerId  { get; private set; }
     
+    private Boleto(Guid chargeId, Guid sellerId, string codeBoleto)
+    {
+        Id = Guid.NewGuid();
+        ChargeId = chargeId;
+        SellerId = sellerId;
+        CodeBoleto = codeBoleto;
+    }
 
-        public Boleto (string txt, string codeBoleto, Users users, BoletoStatus boletoStatus, StatusPayment statusPayment, SellerStatus sellerStatus)
+
+        public Boleto(string emitir, BoletoStatus status)
         {
-            Txt = txt;
-            CodeBoleto = codeBoleto;
-            Users = users;
-            BoletoStatus = boletoStatus;
+            Emitir = emitir;
+            Status = status;
         }
-
-
 
     }
 }
