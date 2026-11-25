@@ -9,7 +9,7 @@ namespace LastroApp.Domain.Entities
         public string CPF { get; private set; }
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
-        public Payer(string name, string cpf, string cnpj, SellerStatus sellerStatus , DateTime createdAt)
+        public Payer(string name, string cpf, SellerStatus sellerStatus , DateTime createdAt)
         {
             Id = Guid.NewGuid();
             Name = name;
@@ -19,10 +19,6 @@ namespace LastroApp.Domain.Entities
             if(string.IsNullOrEmpty(name) || name.Length < 3)
             {
                 throw new ArgumentException("Name must be provided and have at least 3 characters.");
-            }
-            if(string.IsNullOrEmpty(cnpj))
-            {
-                throw new ArgumentException("CPF must be provided.");
             }
 
             for (int i = 0; i < cpf.Length; i++)

@@ -1,3 +1,4 @@
+
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -6,11 +7,18 @@
     <Nullable>enable</Nullable>
     <RootNamespace>LastroUnitTest</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit.analyzers" Version="1.27.0" />
-    <PackageReference Include="xunit.v3.extensibility.core" Version="3.2.2" />
+    <PackageReference Include="xunit.v3" Version="4.0.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LastroApp\LastroApp.csproj" />
+    <ProjectReference Include="..\LastroAPI\LastroAPI.csproj" />
   </ItemGroup>
 
 </Project>

@@ -48,15 +48,6 @@ namespace LastroApp.Domain.Entities
 
             return new Boleto(charge.Id, seller.Id, codeBoleto, charge.AmountInCents, CreationDate);
         }
-        public bool IsExpired() => DateTime.Today > ExpirationDate.Date;
-        public void ValidateBoleto()
-        {
 
-            if(IsExpired() == true)
-            {   
-                Status = BoletoStatus.Closure;
-                throw new DomainException("The boleto is past due");
-            }
-        } 
     }
 }
