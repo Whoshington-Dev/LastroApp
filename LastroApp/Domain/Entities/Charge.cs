@@ -28,7 +28,12 @@ namespace LastroApp.Domain.Entities
 
         public static Charge Create(Seller seller, Payer payer, long amountInCents, string description)
         {
-            seller.ValidSeller();
+            Seller.Create(
+                seller.Name,
+                seller.CNPJ, 
+                seller.SellerStatus, 
+                seller.CreatedAt
+                );
 
             if (amountInCents < 100)
             {

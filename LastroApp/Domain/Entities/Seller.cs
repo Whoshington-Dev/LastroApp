@@ -1,3 +1,4 @@
+using LastroApp.Domain.En;
 using LastroApp.Domain.Enums;
 
 namespace LastroApp.Domain.Entities{
@@ -11,43 +12,55 @@ namespace LastroApp.Domain.Entities{
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
 
-        public Seller (int Id, string name, string cnpj, SellerStatus sellerStatus, DateTime createAt)
+        public Seller (string name, string cnpj, SellerStatus sellerStatus, DateTime createAt)
         {
+            Id = Guid.NewGuid();
             Name = name; 
             CNPJ = cnpj;
             SellerStatus = SellerStatus;
             CreatedAt = createAt;
 
+            
+        }
+        public static Seller Create(
+            string name, 
+            string cnpj, 
+            SellerStatus sellerStatus, 
+            DateTime createAt)
+        {   
+            ValidateName(name);
+            ValidateCnpj(cnpj);
+                 
+            return new Seller(name.Trim(), cnpj, sellerStatus, createAt);
+        }
+        private static void ValidateName(string name)
+        {
             if(string.IsNullOrEmpty(name) || name.Length < 3)
             {
                 throw new ArgumentException("Name must be provided and have at least 3 characters.");
             }
+        }
+        private static void ValidateCnpj(string cnpj)
+        {
             if(string.IsNullOrEmpty(cnpj))
             {
                 throw new ArgumentException("CNPJ must be provided.");
             }
-            
-            for (int i = 0; i < cnpj.Length; i++)
+            if (!cnpj.All(char.IsDigit))
             {
-                if (!char.IsDigit(cnpj[i]))
-                {
                     throw new ArgumentException("CNPJ must contain only numbers.");
-                }
-                if(cnpj.Length != 14)
-                {
+            }
+            if(cnpj.Length != 14)
+            {
                     throw new ArgumentException("CNPJ must have 14 digits.");
-                }
             }
         }
-        public void ValidSeller()
-        {   
-            if(SellerStatus != SellerStatus.Active)
+        
+        public void EnsureCanIssueBoleto()
+        {
+             if(SellerStatus != SellerStatus.Active)
             {
                 throw new InvalidOperationException("The Seller must be active!");
-            }
-            if(SellerStatus == SellerStatus.Banned)
-            {
-                throw new InvalidOperationException("The Seller was banned");
             }
         }
     }
