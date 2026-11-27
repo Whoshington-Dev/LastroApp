@@ -2,7 +2,7 @@ namespace LastroApp.Domain.Enums
 {
     public enum BoletoStatus
     {
-        Issuance,
+        Issued,
         Payment,
         Overdue,
         Closure
