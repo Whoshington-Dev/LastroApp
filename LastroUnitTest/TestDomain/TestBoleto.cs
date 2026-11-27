@@ -1,51 +1,55 @@
-using System.Reflection;
-using System.Security.Permissions;
 using LastroApp.Domain.Entities;
 using LastroApp.Domain.Enums;
+using LastroApp.Domain.Exceptions;
 using Xunit;
-using Xunit.Sdk;
-
-
 
 namespace LastroUnitTest.TestDomain
 {
     public class TestBoleto
     {
-        [Fact]
-        public void Issue_ShouldCreateBoleto_WhenDataIsValid()
+        private const string ValidCode = "34191790010104351004791020150008291070000065000";
+        private static Seller ValidSeller()
         {
-            // Arrange
-            var seller = new Seller(
+            return new Seller(
                 1,
                 "João Silva Comércio LTDA",
                 "12345678000199",
                 SellerStatus.Active,
                 DateTime.Today
             );
-            var payer = new Payer(
+        }
+        private static Payer CreatePayer()
+        {
+            return new Payer(
                 "Carlos Henrique Oliveira",
-                "12345678909",
+                "07511107109",
                 SellerStatus.Active,
                 DateTime.Today
             );
-            var charge = Charge.Create(
-                seller, 
-                payer,
-                100,
-                "Assinatura anual Curso de Inglês"
-            );
-
-            var codeBoleto = "";
-            var createDate = DateTime.Now;
-
-            // Act
-            var boleto = Boleto.Issue(charge, seller, codeBoleto, createDate);
-            
-            // Assert
-            Assert.NotNull(boleto);
-            Assert.Equal(100, boleto.AmountInCents); 
-            
         }
         
-    }   
+        private static Charge CreateCharge(Seller seller, long amountInCents = 5000) 
+            => Charge.Create(seller, CreatePayer(), amountInCents, "Assinatura anual");
+        private static DateTime FutureDate() => DateTime.UtcNow.AddDays(3); 
+
+        [Fact]
+        public void Issue_ShouldCreateBoleto_WhenDataIsValid()
+        {
+            // Arrange: prepara o cenário
+            var seller = ValidSeller();
+            var charge = CreateCharge(seller, 5000);
+            var maturity = FutureDate();
+
+            // Act: executa a única coisa que está sendo testada
+            var boleto = Boleto.Issue(charge, seller, BoletoStatus.Issued, ValidCode, maturity);
+
+            // Assert: confere o resultado
+            Assert.NotEqual(Guid.Empty, boleto.Id);
+            Assert.Equal(BoletoStatus.Issued, boleto.Status);  
+            Assert.Equal(charge.Id, boleto.ChargeId);
+            Assert.Equal(seller.Id, boleto.SellerId);
+            Assert.Equal(5000, charge.AmountInCents);         
+            Assert.Equal(ValidCode, boleto.CodeBoleto);
+        }
+    }
 }
