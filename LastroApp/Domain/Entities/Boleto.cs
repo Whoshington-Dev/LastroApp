@@ -1,4 +1,3 @@
-using System.Security.Permissions;
 using LastroApp.Domain.Enums;
 using LastroApp.Domain.Exceptions;
 
@@ -16,22 +15,28 @@ namespace LastroApp.Domain.Entities
         public BoletoStatus Status { get; private set; }
 
 
-        private Boleto(Guid chargeId, Guid sellerId, string codeBoleto, long amountInCents, DateTime creationDate)
+        private Boleto(Guid chargeId, Guid sellerId, string codeBoleto, BoletoStatus boletoStatus, DateTime creationDate)
         {
             Id = Guid.NewGuid();
             ChargeId = chargeId;
             SellerId = sellerId;
             CodeBoleto = codeBoleto;
-            AmountInCents = amountInCents;
             CreationDate = creationDate;
             ExpirationDate = creationDate.AddDays(3);
-            Status = BoletoStatus.Issuance;  
+            Status = boletoStatus; 
         }
 
-        public static Boleto Issue(Charge charge, Seller seller, string codeBoleto, DateTime CreationDate)
+        public static Boleto Issue(Charge charge, Seller seller, BoletoStatus status, string codeBoleto, DateTime CreationDate)
         {
-            seller.ValidSeller(); 
-            
+            seller.ValidSeller();
+
+
+            if (status != BoletoStatus.Issued)
+            {
+                throw new DomainException("The payment slip has an invalid status.");
+
+            }
+
             if(charge.SellerId != seller.Id)
             {
                 throw new DomainException("The charge does not belong to this seller.");
@@ -40,7 +45,7 @@ namespace LastroApp.Domain.Entities
             {
                 throw new DomainException("The boleto code is required.");
             }
-            return new Boleto(charge.Id, seller.Id, codeBoleto, charge.AmountInCents, CreationDate);
+            return new Boleto(charge.Id, seller.Id, codeBoleto, status, CreationDate);
         }
 
     }
