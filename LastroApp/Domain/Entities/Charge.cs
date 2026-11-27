@@ -8,7 +8,7 @@ namespace LastroApp.Domain.Entities
         public Guid Id { get; private set; }
         public Guid SellerId { get; private set; }
         public Payer Payer { get; private set; }
-        public long AmountInCents { get; private set; }
+        public long AmountInCents { get; private set; } 
         public string Description { get; private set; }
         public ChargeStatus Status { get; private set; }
         public int ReissueCount { get; private set; }
@@ -31,9 +31,13 @@ namespace LastroApp.Domain.Entities
             seller.ValidSeller();
 
             if (amountInCents < 100)
+            {
                 throw new DomainException("The amount does not meet the minimum (R$ 1,00).");
+            }
             if (string.IsNullOrWhiteSpace(description))
+            {
                 throw new DomainException("The description is required.");
+            }
 
             return new Charge(seller.Id, payer, amountInCents, description);
         }
